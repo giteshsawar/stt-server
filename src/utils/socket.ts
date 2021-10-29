@@ -44,7 +44,7 @@ module.exports = function(io) {
                     console.log("transcript data", data.results[0].alternatives[0].transcript);
                 }
                 if (data.results[0] && data.results[0].isFinal) {
-                    // stopRecognitionStream();
+                    stopRecognitionStream();
                     // console.log('restarted stream serverside');
                 }
                 socket.emit('results', data);
@@ -82,7 +82,7 @@ function transcribeAudioStream(audio, cb) {
     })
     .on('end', () => {
         console.log('transcript end');
-        // stopRecognitionStream();
+        stopRecognitionStream();
     });
 
     audio.pipe(recognizeStream);
