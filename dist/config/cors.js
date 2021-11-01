@@ -4,7 +4,7 @@ module.exports = {
     credentials: true,
     methods: 'GET,PUT,POST,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
         //   console.log("all whitelist", whiteListURLS, origin);
         if (whiteListURLS.indexOf(origin) !== -1 || origin === undefined) {
             callback(null, true);
