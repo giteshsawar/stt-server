@@ -37,18 +37,27 @@ module.exports = function(io) {
             // const filename = path.basename(data.name);
             // stream.pipe(fs.createWriteStream(filename));
             // socket.emit("data_received", {});
+            // stream.pipe(process.stdout)
+            stream.on('readable', function () {
+                let data;
 
-            transcribeAudioStream(stream, function(data){
-                // console.log("got results", results);
-                if(data && data.results[0] && data.results[0].alternatives[0]) {
-                    console.log("transcript data", data.results[0].alternatives[0].transcript);
+                while (data = this.read()) {
+                    console.log(data);
                 }
-                if (data.results[0] && data.results[0].isFinal) {
-                    stopRecognitionStream();
-                    // console.log('restarted stream serverside');
-                }
-                socket.emit('results', data);
-            });
+            })
+            // transcribeAudioStream(stream ,{})
+
+            // transcribeAudioStream(stream, function(data) {
+            //     // console.log("got results", results);
+            //     if (data && data.results[0] && data.results[0].alternatives[0]) {
+            //         console.log("transcript data", data.results[0].alternatives[0].transcript);
+            //     }
+            //     if (data.results[0] && data.results[0].isFinal) {
+            //         stopRecognitionStream();
+            //         // console.log('restarted stream serverside');
+            //     }
+            //     socket.emit("results", data);
+            // });
 
             // const dataBuffer = Buffer.from(stream, 'base64');
             // const fileStream = fs.createWriteStream('finalaudio.wav', {flags: 'a'});
