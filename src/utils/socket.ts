@@ -20,7 +20,7 @@ const config = {
 
 const request = {
     config,
-    interimResults: false,
+    interimResults: true,
 };
 
 let recognizeStream;
