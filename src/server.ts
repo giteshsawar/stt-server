@@ -5,7 +5,7 @@ import cors from 'cors';
 const path = require('path');
 
 import quickStart from './utils/google-tts';
-// import getText from './utils/recorder';
+import getText from './utils/recorder';
 
 require('dotenv').config({ path: path.resolve(__dirname, "../.env") });
 
