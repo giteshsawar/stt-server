@@ -3,6 +3,8 @@ import { createServer } from 'http';
 import { Server } from "socket.io";
 import cors from 'cors';
 const path = require('path');
+
+import quickStart from './utils/google-tts';
 // import getText from './utils/recorder';
 
 require('dotenv').config({ path: path.resolve(__dirname, "../.env") });
@@ -28,4 +30,5 @@ app.get('/', (req, res) => {
 server.listen(port, () => {
   console.log(`server is listening on ${port}`);
   // getText();
+  // quickStart();
 });

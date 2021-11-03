@@ -1,5 +1,7 @@
 import speechClient from './speech';
 import ss from 'socket.io-stream';
+import quickStart from './google-tts';
+import { Socket } from 'socket.io';
 // const { pipeline, Readable } = require('stream');
 // import { Buffer } from 'buffer';
 // const path = require("path");
@@ -20,7 +22,7 @@ const config = {
 
 const request = {
     config,
-    interimResults: false,
+    interimResults: true,
 };
 
 let recognizeStream;
@@ -45,7 +47,15 @@ module.exports = function(io) {
                 socket.emit("results", data);
             });
         });
-      });
+
+        socket.on("get-speech", async text => {
+            const audio = await quickStart(text);
+
+            const baseAudio = Buffer.from(audio).toString('base64');
+
+            socket.emit("got-speech", baseAudio);
+        });
+    });
 }
 
 function stopRecognitionStream() {
