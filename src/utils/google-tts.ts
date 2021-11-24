@@ -4,7 +4,7 @@ const fs = require('fs');
 const util = require('util');
 // Creates a client
 
-const projectId = "hoorystt";
+const projectId = "tts-test";
 const client = new textToSpeech.TextToSpeechClient({ projectId });
 async function quickStart(text: String) {
 
@@ -19,10 +19,14 @@ async function quickStart(text: String) {
 
   // Performs the text-to-speech request
   const [response] = await client.synthesizeSpeech(request);
-  return response.audioContent;
+  // return response.audioContent;
   // Write the binary audio content to a local file
-//   const writeFile = util.promisify(fs.writeFile);
-//   await writeFile('output.mp3', response.audioContent, 'binary');
+  console.log("writing the audio");
+  const writeFile = util.promisify(fs.writeFile);
+  await writeFile('output.mp3', response.audioContent, 'binary');
+
+  console.log("audio file written");
+  return writeFile;
 //   console.log('Audio content written to file: output.mp3');
 }
 

@@ -4,8 +4,8 @@ import quickStart from './google-tts';
 import { Socket } from 'socket.io';
 // const { pipeline, Readable } = require('stream');
 // import { Buffer } from 'buffer';
-// const path = require("path");
-// const fs = require("fs");
+const path = require("path");
+const fs = require("fs");
 
 const params = {
     encoding: 'WEBM_OPUS',
@@ -41,19 +41,45 @@ module.exports = function(io) {
                     console.log("transcript data", data.results[0].alternatives[0].transcript);
                 }
                 if (data.results[0] && data.results[0].isFinal) {
-                    stopRecognitionStream();
+                    // stopRecognitionStream();
                     // console.log('restarted stream serverside');
                 }
                 socket.emit("results", data);
             });
         });
 
-        socket.on("get-speech", async text => {
+        socket.on("tts", async text => {
             const audio = await quickStart(text);
 
-            const baseAudio = Buffer.from(audio).toString('base64');
+            const audioStream = ss.createStream();
 
-            socket.emit("got-speech", baseAudio);
+            console.log("read the file stream");
+            const audioPath = path.resolve(__dirname, '../../output.mp3');
+
+            // if (fs.existsSync(audioPath)) {
+            // const readStream = fs.createReadStream(audioPath);
+    
+            ss(socket).emit('tts-stream', audioStream, { name: 'output.mp3' });
+            fs.createReadStream(audioPath).pipe(audioStream);
+            // } else {
+            //     console.log("file not found", audioPath);
+            // }
+
+            //  readStream.on('data', (data) => {
+            //     console.log(typeof data);
+            //     console.log('sending chunk of data', data);
+
+                // const buffer = await blob.arrayBuffer();
+            // //   // console.log("send the buffer", buffer);
+                // audioStream.write(Buffer.from(data), console.log);
+                // ss(socket).emit('tts-stream', audioStream);
+                
+            //   audioStream.write(Buffer.from(data, 'binary'), console.log);
+
+            //  });
+            // const baseAudio = Buffer.from(audio).toString('base64');
+
+            // socket.emit("tts", baseAudio);
         });
     });
 }

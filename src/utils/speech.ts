@@ -1,7 +1,7 @@
 
 const speech = require('@google-cloud/speech').v1p1beta1;
 
-const projectId = "hoorystt";
+const projectId = "tts-test";
 const client = new speech.SpeechClient({ projectId });
 
 const streamError = err => {
